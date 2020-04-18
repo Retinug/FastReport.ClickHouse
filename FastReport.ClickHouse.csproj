@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FastReport.ClickHouse</RootNamespace>
     <AssemblyName>FastReport.ClickHouse</AssemblyName>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\FastReport.Plugins.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -62,8 +62,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInitializer.cs" />
-    <Compile Include="ClickHouseConnectionStringBuilder.cs" />
-    <Compile Include="ClickHouseDataAdapter.cs">
+    <Compile Include="ClickHouse\ClickHouseConnectionStringBuilder.cs" />
+    <Compile Include="ClickHouse\ClickhouseDbCommand.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ClickHouse\ClickHouseDbConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ClickHouse\ClickHouseDbParameter.cs" />
+    <Compile Include="ClickHouse\ClickHouseDataAdapter.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ClickHouseDataConnection.cs">
@@ -75,6 +82,7 @@
     <Compile Include="ClickHouseConnectionEditor.Designer.cs">
       <DependentUpon>ClickHouseConnectionEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="ClickHouse\ClickHouseDbParameterCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

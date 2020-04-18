@@ -30,6 +30,7 @@ namespace FastReport.Data
 
 		private void Localize()
 		{
+			//todo: localize
 			//MyRes res = new MyRes("ConnectionEditors,Common");
 
 			//gbServer.Text = res.Get("ServerLogon");

@@ -44,7 +44,7 @@ namespace FastReport.Data
 
         public override string QuoteIdentifier(string value, DbConnection connection)
         {
-            return "`" + value + "`";
+            return "\"" + value + "\"";
         }
 
         protected override string GetConnectionStringWithLoginInfo(string userName, string password)
@@ -63,28 +63,24 @@ namespace FastReport.Data
             return typeof(ClickHouseConnection);
         }
 
-        public override DbDataAdapter GetAdapter(string selectCommand, DbConnection connection,
-          CommandParameterCollection parameters)
+        public override DbDataAdapter GetAdapter(string selectCommand, DbConnection connection, CommandParameterCollection parameters)
         {
-            ClickHouseDataAdapter adapter = new ClickHouseDataAdapter();
-
-            DataSet data = new DataSet();
-
-            adapter.Fill(data);
-            //MySqlDataAdapter adapter = new MySqlDataAdapter(selectCommand, connection as MySqlConnection);
-            //foreach (CommandParameter p in parameters)
-            //{
-            //    //MySqlParameter parameter = adapter.SelectCommand.Parameters.Add(p.Name, (MySqlDbType)p.DataType, p.Size);
-            //    ClickHouseParameter parameter.;
-            //    parameter.Value = p.Value;
-            //}
+            ClickHouseDataAdapter adapter = new ClickHouseDataAdapter(selectCommand, connection as ClickHouseDbConnection);
+            foreach (CommandParameter p in parameters)
+            {
+                //ClickHouseDbParameter parameter = adapter.SelectCommand.Parameters.Add(p.Name, (DbType)p.DataType, p.Size);
+                adapter.SelectCommand.Parameters.Add(p.Name);
+                
+                //ClickHouseDbParameter parameter = adapter.SelectCommand.Parameters.AddParam();
+                //parameter.Value = p.Value;
+            }
             return adapter;
         }
 
         public override Type GetParameterType()
         {
             //return typeof(MySqlDbType);
-            return null;
+            return typeof(DbType);
         }
 
         public override string GetConnectionId()
@@ -99,7 +95,7 @@ namespace FastReport.Data
             catch
             {
             }
-            return "MySQL: " + info;
+            return "ClickHouse: " + info;
         }
 
         public override ConnectionEditorBase GetEditor()
