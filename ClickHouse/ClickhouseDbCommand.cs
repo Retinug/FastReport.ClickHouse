@@ -29,12 +29,20 @@ namespace ClickHouse.Ado
 		public override string CommandText 
 		{ 
 			get => dbCommand.CommandText; 
-			set => value = dbCommand.CommandText; 
+			set => dbCommand.CommandText = value; 
 		}
 
-		public override int CommandTimeout { get; set; }
+		public override int CommandTimeout
+		{
+			get => dbCommand.CommandTimeout;
+			set => dbCommand.CommandTimeout = value;
+		}
 
-		public override CommandType CommandType { get; set; }
+		public override CommandType CommandType 
+		{ 
+			get => dbCommand.CommandType;
+			set => dbCommand.CommandType = value;
+		}
 
 		public override bool DesignTimeVisible { get; set; }
 
@@ -52,17 +60,16 @@ namespace ClickHouse.Ado
 
 		protected override bool CanRaiseEvents => base.CanRaiseEvents;
 
-		public override void Cancel() => throw new NotImplementedException();
+		public override void Cancel() => dbCommand.Cancel();
 
-		public override int ExecuteNonQuery() => throw new NotImplementedException();
+		public override int ExecuteNonQuery() => dbCommand.ExecuteNonQuery();
 
-		public override object ExecuteScalar() => throw new NotImplementedException();
+		public override object ExecuteScalar() => dbCommand.ExecuteScalar();
 
-		public override void Prepare() => throw new NotImplementedException();
+		public override void Prepare() => dbCommand.Prepare();
 
 		protected override DbParameter CreateDbParameter()
 		{
-
 			var parameter = new ClickHouseDbParameter();
 			DbParameterCollection.Add(parameter);
 			return parameter;
