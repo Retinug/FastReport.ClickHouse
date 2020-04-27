@@ -101,7 +101,20 @@ namespace ClickHouse.Client.ADO.Adapters
 
         protected override DataTable FillSchema(DataTable dataTable, SchemaType schemaType, IDataReader dataReader)
         {
-            Fill(new DataTable[]{dataTable}, dataReader, 0, 10);
+            var chReader = (ClickHouseDataReader)dataReader;
+            var columns = dataTable.Columns;
+            for (int i = 0; i < dataReader.FieldCount; i++)
+            {
+                var name = dataReader.GetName(i);
+                var existingColumn = columns[name];
+                if (existingColumn == null)
+                {
+                    var chType = chReader.GetClickHouseType(i);
+                    if (chType is NullableType nt)
+                        chType = nt.UnderlyingType;
+                    columns.Add(name, chType.FrameworkType);
+                }
+            }
             return dataTable;
         }
         protected override DataTable[] FillSchema(DataSet dataSet, SchemaType schemaType, IDbCommand command, string srcTable, CommandBehavior behavior) => base.FillSchema(dataSet, schemaType, command, srcTable, behavior);

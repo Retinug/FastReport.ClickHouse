@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data.Common;
 using FastReport.Data.ConnectionEditors;
 using System.Data;
@@ -18,6 +17,7 @@ namespace FastReport.Data
             DataTable schema = null;
             string databaseName = "";
             DbConnection connection = GetConnection();
+
             try
             {
                 OpenConnection(connection);
@@ -35,6 +35,7 @@ namespace FastReport.Data
                 if ((!list.Contains(row[1].ToString()) && (String.Compare(row[0].ToString(), databaseName) == 0)))
                     list.Add(row[1].ToString());
             }
+            connection.Dispose();
         }
 
         public override string[] GetTableNames()
@@ -99,38 +100,6 @@ namespace FastReport.Data
             }
             return "ClickHouse: " + info;
         }
-
-        //public override void FillTableSchema(DataTable table, string selectCommand, CommandParameterCollection parameters)
-        //{
-        //    using (DbConnection conn = GetConnection())
-        //    {
-        //        OpenConnection(conn);
-        //        // prepare select command
-        //        //ClickHouseCommand selectClickHouseCommand = new ClickHouseCommand(conn as ClickHouseConnection);
-        //        //selectCommand = PrepareSelectCommand(selectCommand, table.TableName, conn);
-        //        // read the table schema
-        //        using (DbDataAdapter adapter = GetAdapter(selectCommand, conn, parameters))
-        //        {
-        //            adapter.SelectCommand.CommandTimeout = CommandTimeout;
-        //            //adapter.FillSchema(table, SchemaType.Source);
-        //        }
-        //    }
-        //}
-
-        public override void FillTableData(DataTable table, string selectCommand, CommandParameterCollection parameters)
-        {
-            using (DbConnection conn = GetConnection())
-            {
-                OpenConnection(conn);
-                using (DbDataAdapter adapter = GetAdapter(selectCommand, conn, parameters))
-                {
-                    adapter.SelectCommand.CommandTimeout = CommandTimeout;
-                    table.Clear();
-                    adapter.Fill(table);
-                }
-            }
-        }
-
 
         public override ConnectionEditorBase GetEditor()
         {
